@@ -1,12 +1,20 @@
 package com.cn.simple.netty;
 
+import com.cn.simple.netty.EventLoop.BossEventLoop;
+import com.cn.simple.netty.EventLoop.EventLoopProvider;
+
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.ServerSocketChannel;
 
 public class ServerBootStrap {
 
+    private EventLoopProvider eventLoopProvider;
 
+
+    public ServerBootStrap(EventLoopProvider eventLoopProvider) {
+        this.eventLoopProvider=eventLoopProvider;
+    }
 
     public void bind(SocketAddress localAddress) {
         try {
@@ -19,10 +27,8 @@ public class ServerBootStrap {
             serverChannel.configureBlocking(false);
             // 将该通道对应的ServerSocket绑定到port端口
             serverChannel.socket().bind(localAddress);
-
-            EventLoop bossEvent=this.eventLoopGroupManger.nextBossEvent();
-
-            bossEvent.
+            BossEventLoop boss=eventLoopProvider.nextBoss();
+            boss.registServerChannel(serverChannel);
 
         } catch (IOException e) {
             e.printStackTrace();
