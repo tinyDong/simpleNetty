@@ -2,7 +2,6 @@ package com.cn.simple.netty.EventLoop;
 
 import java.io.IOException;
 import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executor;
@@ -35,6 +34,8 @@ public abstract class EventLoop implements Runnable{
      */
     private String threadName;
 
+    private Thread thread;
+
     /**
      * eventLoop管理者
      */
@@ -59,6 +60,8 @@ public abstract class EventLoop implements Runnable{
     @Override
     public void run() {
         Thread.currentThread().setName(this.threadName);
+        System.out.println(Thread.currentThread().getName()+"启动了r");
+        this.thread=Thread.currentThread();
         while (!Thread.currentThread().isInterrupted()){
             wakenUp.set(false);
             try {
@@ -66,7 +69,7 @@ public abstract class EventLoop implements Runnable{
 
                 processTaskQueue();
 
-                processSelector(selector);
+                selectorProcessTask(selector);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -101,11 +104,16 @@ public abstract class EventLoop implements Runnable{
         }
     }
 
+
+    protected final Thread eventThread(){
+        return this.thread;
+    }
+
     /**Boss 和 Worker需要不同的处理逻辑
      * @param selector
      * @throws IOException
      */
-    protected abstract void processSelector(Selector selector) throws IOException;
+    protected abstract void selectorProcessTask(Selector selector) throws IOException;
 
 
 

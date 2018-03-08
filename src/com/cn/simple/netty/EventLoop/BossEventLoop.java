@@ -14,22 +14,25 @@ public class BossEventLoop extends EventLoop implements Boss{
     }
 
     @Override
-    protected void processSelector(Selector selector) throws IOException {
+    protected void selectorProcessTask(Selector selector) throws IOException {
         Set<SelectionKey> selectionKeys=selector.selectedKeys();
         if (selectionKeys.isEmpty()){
             return;
         }
-
-        for (Iterator<SelectionKey> i = selectionKeys.iterator();i.hasNext();){
+        Iterator<SelectionKey> i = selectionKeys.iterator();
+        while (i.hasNext()){
+            System.out.println("有新的事件");
             SelectionKey key=i.next();
             i.remove();
+            System.out.println("数据可读");
             ServerSocketChannel serverSocketChannel= (ServerSocketChannel) key.channel();
+
             SocketChannel socketChannel=serverSocketChannel.accept();
             socketChannel.configureBlocking(false);
-
             WorkerEventLoop worker=getEventLoopProvider().nextWorker();
-
             worker.registServerChannel(socketChannel);
+
+
         }
     }
 
