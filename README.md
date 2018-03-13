@@ -1,9 +1,9 @@
 "# simpleNetty" 
-仿写的netty服务端模型
+###仿写的netty服务端模型
 
-主要是帮助理解netty线程模型
+###主要是帮助理解netty线程模型
 
-关键点:
+###关键点:
 eventLoop是一个在单线程线程池内执行的任务,并且有个线程安全的队列
 
 EventLoop是抽象类,定义了Worker和Boss共有的一些逻辑方法
