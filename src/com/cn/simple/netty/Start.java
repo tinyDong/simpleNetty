@@ -11,6 +11,5 @@ public class Start {
         ServerBootStrap bootStrap=new ServerBootStrap(eventLoopProvider);
         bootStrap.bind(new InetSocketAddress(3333));
         System.out.println("start");
-
     }
 }
