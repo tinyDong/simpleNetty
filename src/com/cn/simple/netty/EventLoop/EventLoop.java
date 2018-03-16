@@ -113,7 +113,9 @@ public abstract class EventLoop implements Runnable{
      * @param selector
      * @throws IOException
      */
-    protected abstract void selectorProcessTask(Selector selector) throws IOException;
+    protected void selectorProcessTask(Selector selector)throws IOException{
+        throw new UnsupportedOperationException();
+    };
 
 
 
